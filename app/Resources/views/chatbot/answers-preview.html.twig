@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+	<div class="messaging">
+	    <div class="inbox_msg">
+	        <div class="inbox_people">
+	            <div class="inbox_chat">
+	                <div class="chat_list active_chat">
+	                    <div class="chat_people">
+	                      	<div class="chat_img"> <img src="{{ asset('template/img/a2.jpg') }}" alt="sunil"> </div>
+	                      	<div class="chat_ib">
+		                        <h5> 
+		                            {{ chatBot.botname }} <span class="chat_date"> {{ chatBot.createdAt|date('d/m/Y') }} </span>
+		                        </h5>
+		                        <p>{{ chatBot.description }}</p>
+		                        <p>
+		                        	<a style="font-size: 12px;" target="_blank" href="{{ path('view_answers', {'botlink':chatBot.botLink} ) }}"> Voir les r&eacute;ponses </a> 
+		                        </p>
+		                        <p>
+		                        	Lien public : <a style="font-size: 9px;" target="_blank" href="#"> {{ url('chat_whith_bot', {'botlink':chatBot.botLink} ) }} </a> 
+		                        </p>
+	                      	</div>
+
+	                    </div>
+
+	                </div>
+	                <div class="chat_list">
+	                    Charger les reponses : <button onclick="loadPrevAnswer()">  &laquo; </button>
+	                    <button onclick="loadNextAnswer()"> &raquo;  </button>
+	                </div>
+
+	                <div class="chat_list">
+	                    <a target="_blank" href="{{ path('export_answers', {'botlink':chatBot.botLink} ) }}" class="btn "> Exportation csv </a>
+	                </div>
+	                
+	            </div>
+	        </div>
+
+	        <div class="mesgs" style="padding-top: 2px;">
+	            <div class="msg_history" id="conversation">
+	                <div id="chatbox">
+	                	{% set break = false %}
+	                	{% set index = 1 %}
+	                    {% for oneAnswer in allanswers %}
+	                    	<div class="answer-box" style="display: none;" id="answer-box-{{ index }}">
+								<p style="background: silver;">
+									&nbsp; {{ index }} / {{ allanswers|length }}
+									{% if oneAnswer.answers[0] %}
+										<span style="float: right;"> 
+											Le {{ oneAnswer.answers[0].createdAt|date('d/m/Y') }} 
+											&agrave;
+											{{ oneAnswer.answers[0].createdAt|date('H:i:s') }}
+										</span>
+									{% endif %}
+								</p>
+
+								{% for answ in oneAnswer.answers %}
+					                <div class="incoming_msg">
+					                    <div class="received_msg">
+					                    	<div class="received_withd_msg"><p>{{ answ.question.title }}</p></div>
+					                    </div>
+					                </div>
+					                <div class="outgoing_msg">
+					                    <div class="sent_msg"><p>{{ answ.choicevalue }}</p></div>
+					                </div>							
+								{% endfor %}
+	                    	</div>
+							{% set index = index + 1 %}
+						{% endfor %}
+	                </div>
+	                <div class="incoming_msg" style="display: none;" id="good-bye-div">
+	                  	<div class="received_msg">
+		                    <div class="received_withd_msg">
+								<p>
+								{{ chatBot.closingMsg }} 
+								<br/>
+								</p>
+								<br/>
+		                    </div>
+	                  	</div>
+	                </div>
+	            </div>
+	        </div>         
+	    </div>         
+	</div>         
+{% endblock %}
+
+
+
+{% block javascripts %}
+	<script type="text/javascript">
+		var globalIndex = 0;
+		function loadAnswer(index){
+			if (index === undefined) {
+			    index = 1;
+			}
+			console.log(index);
+			var nextBox = document.getElementById('answer-box-' + index);
+			nextBox.style.display = "block";
+		}
+
+		function loadNextAnswer(){
+			index = globalIndex;
+			index++;
+			globalIndex = index;
+			if(index >= 1){
+				var nextBox = document.getElementById('answer-box-' + index);
+				console.log(nextBox);
+				if(nextBox === null){
+					globalIndex--;
+				}
+				else{
+					$('.answer-box').hide();
+					nextBox.style.display = "block";
+				}
+			}
+			else{
+				globalIndex =0;
+			}
+		}
+
+		function loadPrevAnswer(){
+			index = globalIndex;
+			index--;
+			globalIndex = index;
+			if(index >= 1){
+				var nextBox = document.getElementById('answer-box-' + index);
+				if(nextBox === null){
+					globalIndex++;
+				}
+				else{
+					$('.answer-box').hide();
+					nextBox.style.display = "block";
+				}
+			}
+			else{
+				globalIndex =0;
+			}
+		}
+	</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#
+
+<ul>
+	{% for oneAnswer in allanswers %}
+		<li > {{ oneAnswer.people }} 
+			<br/>
+			{% for answ in oneAnswer.answers %}
+				{{ answ.question.title }}
+				{{ answ.choicevalue }}
+			{% endfor %}
+		</li>
+	{% endfor %}
+	
+</ul>
+{% endblock %}
+
+
+#}

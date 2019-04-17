@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style type="text/css">
+        .dot {
+          height: 25px;
+          width: 25px;
+          background-color: #c7a527;
+          color: #fff;
+          font-weight: bold;
+          border-radius: 50%;
+          display: inline-block;
+          text-align: center;
+        }
+    </style>
+
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="inbox_chat">
+                    <div class="chat_list active_chat">
+                        <div class="chat_people">
+                          <div class="chat_img"> <img src="{{ asset('template/img/a2.jpg') }}" alt="sunil"> </div>
+                          <div class="chat_ib">
+                            <h5> 
+                                {{ chatBot.botname }} <span class="chat_date"> {{ chatBot.createdAt|date('d/m/Y') }} </span>
+                            </h5>
+                            <p>{{ chatBot.description }}</p>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mesgs" style="padding-top: 10px;">
+                <h3 style="border-bottom: solid 1px silver;">  Configuration de la question N&deg; {{question.order }}  </h3>
+                <br/>
+                <div class="msg_history" id="chatbox">
+                    <div class="incoming_msg">
+                        <div class="incoming_msg_img"> 
+                            <img src="{{ asset('template/img/a2.jpg') }}" alt="sunil"> 
+                        </div>
+                        <div class="received_msg">
+                            <div class="received_withd_msg">
+                                <p>
+                                    {{ question.title }} 
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    {% for optAnswer in question.answers %}
+                        <span class="badge" style="background:#05728f none repeat scroll 0 0;color:#fff;font-weight: normal;"> {{ optAnswer.optionValue }}   &nbsp;<a style="color:#fff;" href="{{ path('answer_edit', {'id':optAnswer.id }) }}"><i class="fa fa-pencil"></i></a> </span>
+                    {% endfor %}
+
+                    <br style="clear:both;" />
+                    <br style="clear:both;" />
+                    <div class="heading" style="border-top: solid 1px silver;">
+                        <h5> Options de r&eacute;ponse </h5>
+                    </div>
+                <br/>
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}                        
+                    <div class="col-md-12">
+                        <button class="btn btn-success"> Enregistrer </button>                            
+                    </div>
+                {{ form_end(form) }}
+                <div class="col-md-12">
+                    <a class="btn btn-info" href="{{ path('botmanager_show', {'id':chatBot.id}) }}"> Terminer la configuration de la question N&deg; {{question.order }}  </a>
+                </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
+        
+    </div>
+{% endblock %}
+
+
+{#
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Answer creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('answer_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
+
+
+#}

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="messaging">
+            <div class="inbox_msg">
+              <div class="inbox_people">
+                <div class="headind_srch">
+                    <div class="recent_heading">
+                        <h4> Mes bots </h4>
+                    </div>
+                </div>
+                <div class="inbox_chat">
+
+                    {% if chatBots is not empty %}
+                        {% for bot in chatBots %}
+                            <div class="chat_list">
+                                <div class="chat_people">
+                                    <div class="chat_img"> 
+                                        <img src="{{ asset('template/img/a2.jpg') }}" alt="bot">
+                                    </div>
+                                    <div class="chat_ib">
+                                        <h5> {{ bot.botname }} <span class="chat_date"> {{ bot.createdAt|date('d/m/Y') }} </span></h5>
+                                        <p> {{ bot.description }} </p>
+                                        <a style="font-size: 12px;float: right;" href="{{ path('botmanager_show', {'id':bot.id}) }}"> G&eacute;rer</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+              </div>
+              <div class="mesgs" style="padding-top: 0px;">
+                    <div class="heading" style="border-bottom: solid 1px silver;">
+                        <h3> Nouveau chatbot</h3>
+                    </div>
+                    <br/>
+                    {{ form_start(form) }}
+                        {{ form_widget(form) }}                        
+                        <div class="col-md-12">
+                            <button class="btn btn-success"> Enregistrer </button>                            
+                        </div>
+                    {{ form_end(form) }}
+                
+              </div>
+            </div>
+            
+            
+            <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
+            
+      </div>
+{% endblock %}

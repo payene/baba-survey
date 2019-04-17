@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: smspnbgj_chatbot
+    database_user: smspnbgj_chatbot
+    database_password: ~&&}o}dg9cXO
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 1c2303c9c9ea6d23c6f899f00c2ec93f79191c8c

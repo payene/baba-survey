@@ -1,0 +1,162 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Choice
+ *
+ * @ORM\Table(name="choice")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ChoiceRepository")
+ */
+class Choice
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+    * @var \AppBundle\Entity\Question
+    *
+    * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Question",  inversedBy="choices")
+    * @ORM\JoinColumn(name="question", referencedColumnName="id", nullable=false)
+    */
+    private $question;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="choiceValue", type="string", length=255, nullable=true)
+     */
+    private $choiceValue;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="people", type="string", nullable=true)
+     */
+    private $people;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime")
+     */
+    private $createdAt;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    
+
+    /**
+     * Set choiceValue
+     *
+     * @param string $choiceValue
+     *
+     * @return Choice
+     */
+    public function setChoiceValue($choiceValue)
+    {
+        $this->choiceValue = $choiceValue;
+
+        return $this;
+    }
+
+    /**
+     * Get choiceValue
+     *
+     * @return string
+     */
+    public function getChoiceValue()
+    {
+        return $this->choiceValue;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Choice
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set question
+     *
+     * @param \AppBundle\Entity\Question $question
+     *
+     * @return Choice
+     */
+    public function setQuestion(\AppBundle\Entity\Question $question)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return \AppBundle\Entity\Question
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+
+    /**
+     * Set people
+     *
+     * @param string $people
+     *
+     * @return Choice
+     */
+    public function setPeople($people)
+    {
+        $this->people = $people;
+
+        return $this;
+    }
+
+    /**
+     * Get people
+     *
+     * @return string
+     */
+    public function getPeople()
+    {
+        return $this->people;
+    }
+}

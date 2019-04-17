@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		label{
+			clear: both;;
+			border: solid 1px;
+			width:auto;
+		}
+	</style>
+	<title></title>
+</head>
+<body>
+	CHAT BOT  <button onclick="loadQuestion(0)"> Start </button>
+	<div id="chatbox" style="height:400px;width:350x;border:solid 1px;">
+		
+	</div>
+	<br/> 
+	<div id="answer-box">
+		hj
+	</div>
+	
+
+
+<script type="text/javascript">
+	var botJsonUrl = "http://localhost/chatbot-manager/web/app_dev.php/json/chatbot";
+	const req = new XMLHttpRequest();
+	req.open('GET', botJsonUrl, false);
+	req.send(null);
+	var questions = JSON.parse(req.responseText);
+	console.log(questions);
+	var chatSummary = Array();
+
+	// var i = 0;
+	var answerBox = document.getElementById('answer-box');
+	var chatBox = document.getElementById('chatbox');
+
+	function loadQuestion(i){
+		var q = questions[i];
+		console.log(i);
+		if(q !== undefined){
+			var quest = document.createElement('label');
+			quest.style="float:right;display:block;";
+			quest.innerHTML = q['question'];
+			chatbox.appendChild(quest);
+			var answers = q['answers'];
+			console.log(quest);
+			if( q['isInput'] === true ){
+				var input = document.createElement('input');
+				input.setAttribute('id', 'input');
+				input.setAttribute('placeholder', 'Votre reponse ici');
+				input.setAttribute('name', 'response');
+				input.setAttribute('onkeypress', 'return myKeyPress(event, '+ i +')');
+				answerBox.appendChild(input);
+			}
+			else{
+				if(answers == null || answers === undefined){
+
+				}
+				else{
+					for (var j = 0;  j < answers.length;  j++) {
+						var answer = answers[j];
+						var choice = document.createElement('span');
+						choice.setAttribute('id', 'opt-'+i+ '-'+j);
+						choice.setAttribute('onclick', 'chooseOption('+ i +', '+ j +')');
+						choice.innerHTML = answer['option'];
+						answerBox.appendChild(choice);			
+					}
+				}
+			}
+		}
+		else{
+			console.log(JSON.parse(chatSummary));
+		}
+	}
+
+
+	function chooseOption(q,opt){
+		var quest = questions[q];
+		var answers = quest['answers'];
+		var choice = answers[opt];
+		chatSummary.push([quest['idQuest'], choice['id']]);
+		// var txt = (document.getElementById('opt-'+q+ '-'+opt)).innerHTML;
+		var msg = document.createElement('label');
+		msg.innerHTML = choice['option'];
+		msg.style = "display:block;float:left;"
+		chatbox.appendChild(msg);
+		answerBox.innerHTML = "";
+		q = choice['next'] - 1;
+		console.log();
+		loadQuestion(q);
+	}
+
+	function answerToTheBot(q){
+		var quest = questions[q];
+		var input = document.getElementById('input');
+		var answer = input.value;
+		chatSummary.push([quest['idQuest'], answer]);
+		var msg = document.createElement('label');
+		msg.innerHTML = answer;
+		msg.style = "display:block;float:left;"
+		chatbox.appendChild(msg);
+		answerBox.innerHTML = "";
+		q++;
+		loadQuestion(q);
+	}
+
+	function myKeyPress(e, q){
+		var keyNum;
+		keyNum = e.keyCode;
+		if(keyNum === 13){
+			console.log(keyNum);
+			answerToTheBot(q);
+		}
+	}
+	// loadQuestion(2);
+
+
+{#
+	// function appendToChat(msg, isBot){
+	// 	var msgBox = document.createElement('msg-box');
+	// 	msgBox.innerHTML = msg;
+	// 	chatBox.appendChild(msgBox);
+	// }
+
+	// function answerToTheBot() {
+	// 	var answerBox =document.getElementById('answer');
+	// 	alert("ddd");
+	// 	var answer = answerBox.value;
+	// 	appendToChat(answer, true);
+	// }
+
+#}
+
+</script>
+</body>
+</html>
